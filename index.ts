@@ -35,7 +35,11 @@ app.get("/chess", (req, resp) => {
 app.patch("/chess/:gameId", express.json(), (req, res) => {
   const gameId = req.params.gameId;
   const move = req.body;
+
   console.log(`Game ID: ${gameId}, Move: ${move}`);
+  // Usually JSON data should be stringified first,
+  // but this library stringifies it for you.
+  sse.send({ event: gameId, data: move });
 
   res.status(201).json({ timestamp: new Date().getTime() });
 });

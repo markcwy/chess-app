@@ -7,7 +7,7 @@ console.log(`gameId: ${gameId}, orientation: ${orientation}`);
 
 // Handle onDrop
 const onDrop = (src, dst, piece) => {
-  console.log(`src=${src}, dst=${dst}, piece=${piece}`);
+  // console.log(`src=${src}, dst=${dst}, piece=${piece}`);
 
   // Construct the move
   const move = { src, dst, piece };
@@ -38,3 +38,10 @@ const chess = Chessboard("chess", config);
 
 // Start SSE session
 const sse = new EventSource("/chess/stream");
+
+sse.addEventListener(gameId, (msg) => {
+  // console.log(">>> SSE msg: ", msg);
+  const { src, dst, piece } = JSON.parse(msg.data);
+  // console.log(`src: ${src}, dst: ${dst}, piece: ${piece}`);
+  chess.move(`${src}-${dst}`);
+});
